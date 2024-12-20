@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+    <style>
+        
+        .pagination {
+            display: flex;
+            justify-content: center; /* Ortalamayı sağlar */
+            align-items: center; /* Dikey ortalamayı sağlar */
+            margin: 50px 0; /* Yukarı ve aşağı boşluk ekler */
+        }
+
+        .pagination .step-links a,
+        .pagination .step-links .current {
+            margin: 0 5px; /* Butonlar arasına boşluk ekler */ 
+            padding: 8px 12px; /* Buton boyutlarını ayarlar */
+            border: 3px solid #ddd;
+            text-decoration: none;
+            color: #007bff;
+            border-radius: 5px;
+        }
+
+        .pagination .step-links a:hover {
+            background-color: green;
+            color: black;
+        }
+
+        .pagination .step-links .current {
+            background-color: blue;
+            color: white;
+            border: 3px solid #007bff;
+        }
+
+        #alert-container {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            width: 100%;
+            max-width: 350px;
+            margin-top: 5px;
+        }
+        
+        .alert {
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px;
+            font-family: cursive;
+            font-size: large;
+            color: black;
+            border-color: black;
+            border-width: 1px;
+        }
+    
+    </style>
+
+    <!-- Uyarı Mesajı Başlangıç -->
+    <div id="alert-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-dark alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <!-- Uyarı Mesajı Bitiş -->
+
+    
+    <!-- News With Sidebar Start -->
+    <div class="container-fluid mt-5 pt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title">
+                                <h4 class="m-0 text-title font-weight-bold">Kategori : {{ category }}</h4>
+                                <span class="text-secondary font-weight-medium text-decoration-none">{{ category|title }} ile ilgili haberler</span>
+                            </div>
+                        </div>
+
+                        {% for haber in haberler %}
+                            <div class="col-lg-6">
+                                <div class="position-relative mb-3">
+                                    <img class="img-fluid w-100" src="{{ haber.resim }}" style="object-fit: cover;">
+                                    <div class="bg-white border border-top-0 p-4">
+                                        <div class="mb-2">
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                                href="">{{ category }}</a>
+                                            <a class="text-body" href=""><small>{{ haber.tarih }}</small></a>
+                                        </div>
+                                        <a class="h4 d-block mb-3 text-secondary text-title font-weight-bold" href="{{ haber.link }}">{{ haber.baslik }}</a>
+                                        <p class="m-0">{{ haber.aciklama }}</p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                
+                <div class="col-lg-4">
+                   
+                <!-- Popular News Start -->
+                
+                <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-title font-weight-bold">Popüler Haberler</h4>
+                        </div>
+
+                        {% for haber in haberler|slice:"6" %}
+                            <div class="bg-white border border-top-3 p-3">
+                                <div class="d-flex align-items-center bg-white mb-3" style="height: 200px;">
+                                    <img class="img-fluid" src="{{ haber.resim }}" alt="" width="150">
+                                    <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                        <div class="mb-2">
+                                            <span class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2">{{ category }}</span><br>
+                                            <span class="text-body"><small>{{ haber.tarih }}</small></span>
+                                        </div>
+                                        <a class="h6 m-0 text-secondary text-title font-weight-bold" href="{{ haber.link }}">{{ haber.baslik }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    
+                    </div>
+                    
+                    <!-- Popular News End -->
+                    
+
+                    
+                    <!-- Tags Start -->
+                    
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Etiketler</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-3">
+                            <div class="d-flex flex-wrap m-n1">
+                                <span class="btn btn-sm btn-outline-info m-1">Politika</span>
+                                <span class="btn btn-sm btn-outline-info m-1">Ekonomi</span>
+                                <span class="btn btn-sm btn-outline-info m-1">Teknoloji</span>
+                                <span class="btn btn-sm btn-outline-info m-1">Spor</span>
+                                <span class="btn btn-sm btn-outline-info m-1">Dünya</span>
+                                <span class="btn btn-sm btn-outline-info m-1">Magazin</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tags End -->
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- News With Sidebar End --> 
+
+
+    <!-- Sayfalandırma Başlangıç -->
+                        
+    <div class="col-12">
+        <div id="pagination-container" class="pagination">
+            
+            <span class="step-links">
+                
+                {% if haberler.has_previous %}
+                    <a href="{% url 'kategori' category=category %}?page={{ haberler.previous_page_number }}">Önceki</a>
+                {% endif %}
+        
+                {% for num in haberler.paginator.page_range %}
+                    {% if num == haberler.number %}
+                        <span class="current">{{ num }}</span>
+                    {% else %}
+                        <a href="{% url 'kategori' category=category %}?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+        
+                {% if haberler.has_next %}
+                    <a href="{% url 'kategori' category=category %}?page={{ haberler.next_page_number }}">Sonraki</a>
+                {% endif %}
+            
+            </span>
+
+        </div>
+    </div>
+
+    <!-- Sayfalandırma Son -->
+    
+
+    
+    
+    <!-- Javascript: Sayfalandırma kısmına kaydırma işlevi -->
+
+    <script>
+        
+        // Sayfa yüklendiğinde pagination-container'a kaydır
+        window.onload = function() {
+            var paginationContainer = document.getElementById("pagination-container");
+            if (paginationContainer) {
+                paginationContainer.scrollIntoView({ behavior: "smooth", block: "start"})
+            }
+        }
+
+        // Uyarı mesajlarını 5 saniye sonra kaybolacak şekilde ayarla
+        setTimeout(function() {
+            var alertContainer = document.getElementById("alert-container");
+            if (alertContainer) {
+                alertContainer.style.transition = "opacity 0.9s ease-out";
+                alertContainer.style.opacity = "0.5";
+                setTimeout(function() {
+                    alertContainer.remove();
+                }, 1200);
+            }
+        }, 5000);
+    
+    </script>
+
+{% endblock content %}
+
+
+    

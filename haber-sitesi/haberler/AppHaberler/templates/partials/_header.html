@@ -1,0 +1,125 @@
+    <style>
+        #current-time {
+            font-size: 1.2rem;
+            font-weight: italic;
+        }
+    </style>
+    
+    <!-- Topbar Start -->
+    <div class="container-fluid d-none d-lg-block">
+        <div class="row align-items-center bg-dark px-lg-5 py-1"> 
+            
+            <!-- Güncel Saat Bölümü Başlangıç -->
+            <div class="col-lg-6 d-flex justify-content-start align-items-center text-white">
+                <div id="current-time">
+                    {{ current_time }} 
+                </div>
+            </div>
+            <!-- Güncel Saat Bölümü Bitiş -->
+            
+            <div class="col-lg-6 d-flex justify-content-end align-items-center">
+                <nav class="navbar navbar-expand-sm p-0">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-body" href="https://x.com/"><small class="fab fa-twitter"></small></a>
+                        </li>
+                            
+                        <li class="nav-item">
+                            <a class="nav-link text-body" href="https://www.facebook.com/"><small class="fab fa-facebook-f"></small></a>
+                        </li>
+                            
+                        <li class="nav-item">
+                            <a class="nav-link text-body" href="https://www.linkedin.com/learning/"><small class="fab fa-linkedin-in"></small></a>
+                        </li>
+                            
+                        <li class="nav-item">
+                            <a class="nav-link text-body" href="https://www.instagram.com/"><small class="fab fa-instagram"></small></a>
+                        </li>
+                            
+                        <li class="nav-item">
+                            <a class="nav-link text-body" href="https://www.youtube.com/"><small class="fab fa-youtube"></small></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        
+        <div class="row align-items-center bg-white py-3 px-lg-5">
+            <div class="col-lg-4">
+                <a href="{% url 'index' %}" class="navbar-brand p-0 d-none d-lg-block">
+                    <h1 class="m-0 display-4 text-uppercase text-primary">Biz<span class="text-secondary font-weight-normal">Haber</span></h1>
+                </a>
+            </div>
+            <div class="col-lg-8 text-center text-lg-right">
+                <a href="https://htmlcodex.com"><img class="img-fluid" src="img/ads-728x90.png" alt=""></a>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
+            <a href="index.html" class="navbar-brand d-block d-lg-none">
+                <h1 class="m-0 display-4 text-uppercase text-primary">Biz<span class="text-white font-weight-normal">Haber</span></h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav mr-auto py-0">
+                    
+                    <a href="{% url 'index' %}" class="nav-item nav-link mr-2
+
+                        {% if request.path == '/' %}
+                            
+                            active
+                        
+                        {% endif %}
+                        
+                        ">Anasayfa</a>
+
+                        {% for cat in categories %}
+                            
+                            <a href="{% url 'kategori' cat.slug %}" class="nav-item nav-link mr-2
+                                
+                                {% if cat.slug == category %}
+                            
+                                    active
+                        
+                                {% endif %} 
+                            
+                            ">{{ cat.category }}</a>
+                        
+                        {% endfor %}
+                
+                </div>
+                
+                <div class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
+                    <input type="text" class="form-control border-0" placeholder="Arama Kutusu...">
+                    <div class="input-group-append">
+                        <button class="input-group-text bg-primary text-dark border-0 px-3"><i
+                                class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+    
+    <script>
+        
+        function updateTime() {
+            const timeElement = document.getElementById("current-time");
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            const seconds = now.getSeconds().toString().padStart(2, "0");
+            timeElement.innerText = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    
+    </script>
